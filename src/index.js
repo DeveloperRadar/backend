@@ -15,10 +15,10 @@ mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0-psh5r.mongo
 
 const app = express();
 // Middlewares
+app.use(express.json());
 app.use(cors({
   origin: "http://localhost:3000"
 }));
-app.use(express.json());
 app.use(routes);
 
 app.listen(3333, () => {
