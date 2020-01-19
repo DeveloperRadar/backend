@@ -1,9 +1,11 @@
 require("dotenv").config();
+const http = require("http");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
 const routes = require("./routes");
+const { setupWebSocket } = require("./websocket");
 
 const { MONGO_USER, MONGO_PASS, MONGO_DATABASE } = process.env;
 
@@ -14,6 +16,8 @@ mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0-psh5r.mongo
 });
 
 const app = express();
+const server = http.Server(app);
+setupWebSocket(server);
 // Middlewares
 app.use(express.json());
 app.use(cors({
@@ -21,6 +25,6 @@ app.use(cors({
 }));
 app.use(routes);
 
-app.listen(3333, () => {
+server.listen(3333, () => {
   console.log(`App is listening at http://localhost:3333`);
 });
